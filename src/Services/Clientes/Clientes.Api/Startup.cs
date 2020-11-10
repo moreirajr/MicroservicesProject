@@ -1,10 +1,13 @@
 using Clientes.Infra.CrossCutting.IoC;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
@@ -28,12 +31,14 @@ namespace Clientes.Api
 
 
             services
-               .AddControllersConfiguration()
-               .AddSwaggerConfiguration(Configuration)
-               .AddEFConfiguration(Configuration)
-               .AddIntegrations()
-               .AddEventBus()
-               .ConfigureDependencies();
+                .AddApplicationInsights(Configuration)
+                .AddControllersConfiguration()
+                .AddHealthChecks(Configuration)
+                .AddSwaggerConfiguration(Configuration)
+                .AddEFConfiguration(Configuration)
+                .AddIntegrations()
+                .AddEventBus()
+                .ConfigureDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +57,15 @@ namespace Clientes.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
             });
 
             app.UseSwagger().UseSwaggerUI(c =>
@@ -113,6 +127,34 @@ namespace Clientes.Api
         public static IServiceCollection AddEFConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             return services.ConfigureEF(configuration.GetConnectionString("connection"));
+        }
+
+        public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        {
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
+
+            hcBuilder
+                .AddSqlServer(
+                    configuration.GetConnectionString("connection"),
+                    name: "MicroservicesProjectDB_Cliente-check",
+                    tags: new string[] { "orderingdb" });
+
+            hcBuilder
+                .AddRabbitMQ(
+                    $"amqp://{configuration["EventBusConnection"]}",
+                    name: "cliente-rabbitmqbus-check",
+                    tags: new string[] { "rabbitmqbus" });
+
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationInsights(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddApplicationInsightsTelemetry(configuration);
+
+            return services;
         }
     }
 

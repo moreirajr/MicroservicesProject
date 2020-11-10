@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contas.Infra.CrossCutting.IoC;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -33,7 +36,9 @@ namespace Contas.Api
 
             //ContasApplicationModule
             services
+                .AddApplicationInsights(Configuration)
                 .AddControllersConfiguration()
+                .AddHealthChecks(Configuration)
                 .AddSwaggerConfiguration(Configuration)
                 .AddIntegrations()
                 .AddEventBus();
@@ -57,6 +62,15 @@ namespace Contas.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
             });
 
             app.UseSwagger().UseSwaggerUI(c =>
@@ -111,6 +125,34 @@ namespace Contas.Api
                     Description = "Serviço de Api de Contas"
                 });
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        {
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
+
+            hcBuilder
+                .AddSqlServer(
+                    configuration.GetConnectionString("connection"),
+                    name: "MicroservicesProjectDB_Conta-check",
+                    tags: new string[] { "orderingdb" });
+
+            hcBuilder
+                .AddRabbitMQ(
+                    $"amqp://{configuration["EventBusConnection"]}",
+                    name: "cliente-rabbitmqbus-check",
+                    tags: new string[] { "rabbitmqbus" });
+
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationInsights(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddApplicationInsightsTelemetry(configuration);
 
             return services;
         }
