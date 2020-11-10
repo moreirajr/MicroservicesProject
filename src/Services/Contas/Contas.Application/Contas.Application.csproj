@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Core\EventBus.Core.csproj" />
+    <ProjectReference Include="..\Contas.Domain\Contas.Domain.csproj" />
+    <ProjectReference Include="..\Contas.Infra.CrossCutting\Contas.Infra.CrossCutting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CQRS\Queries\" />
+  </ItemGroup>
+
+</Project>

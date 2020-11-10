@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBus.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Contas.Application\Contas.Application.csproj" />
+    <ProjectReference Include="..\Contas.Infra.CrossCutting\Contas.Infra.CrossCutting.csproj" />
+    <ProjectReference Include="..\Contas.Infra.Data\Contas.Infra.Data.csproj" />
+  </ItemGroup>
+
+</Project>

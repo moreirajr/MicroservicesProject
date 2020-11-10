@@ -1,0 +1,32 @@
+﻿<!-- Changed from Microsoft.NET.Sdk to Microsoft.NET.Sdk.Web for Integration Tests-->
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>2</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.0.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Moq" Version="4.14.7" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Clientes.Api\Clientes.Api.csproj" />
+    <ProjectReference Include="..\..\Clientes.Application\Clientes.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="IntegrationTests\" />
+  </ItemGroup>
+
+</Project>

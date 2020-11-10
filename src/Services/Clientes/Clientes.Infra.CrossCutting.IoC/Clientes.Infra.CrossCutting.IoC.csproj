@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Core\EventBus.Core.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBus.RabbitMQ.csproj" />
+    <ProjectReference Include="..\Clientes.Application\Clientes.Application.csproj" />
+    <ProjectReference Include="..\Clientes.Domain\Clientes.Domain.csproj" />
+    <ProjectReference Include="..\Clientes.Infra.Data\Clientes.Infra.Data.csproj" />
+  </ItemGroup>
+
+</Project>

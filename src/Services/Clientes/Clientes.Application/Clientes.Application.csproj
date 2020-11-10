@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Clientes\IntegrationEvents\EventHandlers\" />
+    <Folder Include="Clientes\Validations\" />
+    <Folder Include="Clientes\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Core\EventBus.Core.csproj" />
+    <ProjectReference Include="..\Clientes.Domain\Clientes.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
