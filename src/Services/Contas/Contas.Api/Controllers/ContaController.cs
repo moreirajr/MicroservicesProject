@@ -22,14 +22,16 @@ namespace Contas.Api.Controllers
         {
             var contaCliente = await _contaAppService.ObterContaPorCPF(cpf);
 
+            if (contaCliente == null) return NotFound("Cliente não encontrado.");
+
             return Ok(contaCliente);
         }
 
         [HttpPost]
         [Route("solicitar-cartao")]
-        public async Task<IActionResult> SolicitarCartao(long cartaoId)
+        public async Task<IActionResult> SolicitarCartao(long contaId)
         {
-            var result = await _contaAppService.SolicitarCartao(cartaoId);
+            var result = await _contaAppService.SolicitarCartao(contaId);
 
             if (result == null)
                 return BadRequest("Erro ao solicitar cartão.");

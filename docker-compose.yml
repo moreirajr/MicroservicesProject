@@ -1,0 +1,59 @@
+version: '3.4'
+
+services:
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2017-latest 
+
+  nosqldata-mongo:
+    image: mongo
+
+  rabbitmq-broker:
+    image: rabbitmq:3-management-alpine
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "5672"]
+      interval: 5s
+      timeout: 15s
+      retries: 5
+
+  microservicesproject-apigateway:
+    image: ${DOCKER_REGISTRY-}microservicesprojectapigateway
+    build:
+      context: .
+      dockerfile: src/ApiGateways/MicroservicesProject.ApiGateway/Dockerfile
+    depends_on:
+      - clientes-api
+      - contas-api
+
+  clientes-tests:
+    image: ${DOCKER_REGISTRY-}clientestests
+    build:
+      context: .
+      dockerfile: src/Services/Clientes/tests/Clientes.Tests/Dockerfile
+    depends_on:
+      - clientes-api
+
+
+  clientes-api:
+    image: ${DOCKER_REGISTRY-}clientesapi
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: src/Services/Clientes/Clientes.Api/Dockerfile
+    depends_on:
+      - sqldata
+      - rabbitmq-broker
+      - nosqldata-mongo
+
+
+  contas-api:
+    image: ${DOCKER_REGISTRY-}contasapi
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: src/Services/Contas/Contas.Api/Dockerfile
+    depends_on:
+      - sqldata
+      - rabbitmq-broker
+      - nosqldata-mongo
+

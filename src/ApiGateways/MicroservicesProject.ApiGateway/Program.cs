@@ -19,7 +19,8 @@ namespace MicroservicesProject.ApiGateway
                         .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                         .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                        .AddJsonFile($"ocelot.json")
+                        //.AddJsonFile($"ocelot.json", true, true)
+                        .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
                         .AddEnvironmentVariables();
                 })
               .UseStartup<Startup>();

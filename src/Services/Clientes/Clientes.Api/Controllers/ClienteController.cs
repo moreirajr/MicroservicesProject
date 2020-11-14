@@ -23,6 +23,8 @@ namespace Clientes.Api.Controllers
         {
             var cliente = await _clienteAppService.CadastrarCliente(command);
 
+            if (cliente == null) return BadRequest("Erro ao cadastrar cliente.");
+
             return Created(string.Empty, cliente);
         }
 

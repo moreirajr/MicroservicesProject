@@ -55,7 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Core", "src\Buildi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{8C5C25D3-D425-4E9B-AEA7-AC89F7B1A0E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroservicesProject.ApiGateway", "src\ApiGateways\MicroservicesProject.ApiGateway\MicroservicesProject.ApiGateway.csproj", "{485A32D4-89AD-41A8-9A07-34D5E31E5B2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroservicesProject.ApiGateway", "src\ApiGateways\MicroservicesProject.ApiGateway\MicroservicesProject.ApiGateway.csproj", "{485A32D4-89AD-41A8-9A07-34D5E31E5B2E}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9F532549-DED1-4CE5-A883-2AF92A3E8B22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{485A32D4-89AD-41A8-9A07-34D5E31E5B2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{485A32D4-89AD-41A8-9A07-34D5E31E5B2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{485A32D4-89AD-41A8-9A07-34D5E31E5B2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F532549-DED1-4CE5-A883-2AF92A3E8B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F532549-DED1-4CE5-A883-2AF92A3E8B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F532549-DED1-4CE5-A883-2AF92A3E8B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F532549-DED1-4CE5-A883-2AF92A3E8B22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

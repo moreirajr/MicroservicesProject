@@ -1,0 +1,58 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          //container_name
+          "Host": "contasapi",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/conta-api/{everything}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "SwaggerKey": "conta-api"
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "clientesapi",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/cliente-api/{everything}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "SwaggerKey": "cliente-api"
+    }
+  ],
+
+  "SwaggerEndPoints": [
+    {
+      "Key": "cliente-api",
+      "Config": [
+        {
+          "Name": "Cliente Api",
+          "Version": "v1",
+          "Url": "${clientesapi}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "conta-api",
+      "Config": [
+        {
+          "Name": "Conta Api",
+          "Version": "v1",
+          "Url": "${contasapi}/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+
+  "GlobalConfiguration": {
+    "BaseUrl": "msApigateway"
+  }
+}

@@ -139,11 +139,11 @@ namespace Clientes.Api
                 .AddSqlServer(
                     configuration.GetConnectionString("connection"),
                     name: "MicroservicesProjectDB_Cliente-check",
-                    tags: new string[] { "orderingdb" });
+                    tags: new string[] { "clientedb" });
 
             hcBuilder
                 .AddRabbitMQ(
-                    $"amqp://{configuration["EventBusConnection"]}",
+                    $"amqp://{configuration["RabbitMQConfiguration:EventBusConnection"]}",
                     name: "cliente-rabbitmqbus-check",
                     tags: new string[] { "rabbitmqbus" });
 

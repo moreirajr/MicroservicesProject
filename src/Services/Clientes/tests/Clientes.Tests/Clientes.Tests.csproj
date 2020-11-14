@@ -5,6 +5,12 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     
     <IsPackable>false</IsPackable>
+    
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    
+    <DockerfileContext>..\..\..\..\..</DockerfileContext>
+    
+    <DockerComposeProjectPath>..\..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -14,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.0.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Moq" Version="4.14.7" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />

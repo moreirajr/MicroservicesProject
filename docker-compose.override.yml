@@ -1,0 +1,75 @@
+version: '3.4'
+
+services:
+
+  sqldata:
+    container_name: sql-server-db
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
+
+  nosqldata-mongo:
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+
+  rabbitmq-broker:
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  microservicesproject-apigateway:
+    container_name: msApigateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ContasApiUrl=https://contas-api:5003/hc
+      - ClientesApiUrl=https://clientes-api:5001/hc
+    ports:
+      - "5100:443"
+      - "5101:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - clientes-api
+      - contas-api
+
+  clientes-tests:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5500:5500"
+
+  clientes-api:
+    container_name: clientesapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5001;http://+:5002
+      - ConnectionStrings__connection=Server=sqldata;Database=MicroservicesProjectDB_Cliente;User Id=sa;Password=Pass@word
+      - RabbitMQConfiguration__EventBusConnection=rabbitmq-broker
+      - MongoDbSettings__ConnectionString=mongodb://nosqldata-mongo
+    ports:
+      - "5001:5001"
+      - "5002:5002"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  contas-api:
+    container_name: contasapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5003;http://+:5004
+      - ConnectionStrings__connection=Server=sqldata;Database=MicroservicesProjectDB_Conta;User Id=sa;Password=Pass@word
+      - RabbitMQConfiguration__EventBusConnection=rabbitmq-broker
+      - MongoDbSettings__ConnectionString=mongodb://nosqldata-mongo
+    ports:
+      - "5003:5003"
+      - "5004:5004"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
