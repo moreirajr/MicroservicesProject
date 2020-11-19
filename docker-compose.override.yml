@@ -26,8 +26,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ContasApiUrl=https://contas-api:5003/hc
-      - ClientesApiUrl=https://clientes-api:5001/hc
+      - ContasApiUrl=http://contas-api/hc
+      - ClientesApiUrl=http://clientes-api/hc
     ports:
       - "5100:443"
       - "5101:80"
@@ -48,13 +48,14 @@ services:
     container_name: clientesapi
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:5001;http://+:5002
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      #- PATH_BASE=/ms-clientes
       - ConnectionStrings__connection=Server=sqldata;Database=MicroservicesProjectDB_Cliente;User Id=sa;Password=Pass@word
       - RabbitMQConfiguration__EventBusConnection=rabbitmq-broker
       - MongoDbSettings__ConnectionString=mongodb://nosqldata-mongo
     ports:
-      - "5001:5001"
-      - "5002:5002"
+      - "5001:443"
+      - "5002:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -63,13 +64,14 @@ services:
     container_name: contasapi
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:5003;http://+:5004
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      #- PATH_BASE=/ms-contas
       - ConnectionStrings__connection=Server=sqldata;Database=MicroservicesProjectDB_Conta;User Id=sa;Password=Pass@word
       - RabbitMQConfiguration__EventBusConnection=rabbitmq-broker
       - MongoDbSettings__ConnectionString=mongodb://nosqldata-mongo
     ports:
-      - "5003:5003"
-      - "5004:5004"
+      - "5003:443"
+      - "5004:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

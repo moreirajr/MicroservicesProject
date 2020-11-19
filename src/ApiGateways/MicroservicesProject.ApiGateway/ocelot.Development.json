@@ -2,12 +2,12 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          //container_name
-          "Host": "contasapi",
-          "Port": 5003
+          //container name
+          "Host": "contas-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/conta-api/{everything}",
@@ -16,11 +16,11 @@
     },
     {
       "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "clientesapi",
-          "Port": 5001
+          "Host": "clientes-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/cliente-api/{everything}",
@@ -36,7 +36,7 @@
         {
           "Name": "Cliente Api",
           "Version": "v1",
-          "Url": "${clientesapi}/swagger/v1/swagger.json"
+          "Url": "http://clientes-api/swagger/v1/swagger.json"
         }
       ]
     },
@@ -46,7 +46,7 @@
         {
           "Name": "Conta Api",
           "Version": "v1",
-          "Url": "${contasapi}/swagger/v1/swagger.json"
+          "Url": "http://contas-api/swagger/v1/swagger.json"
         }
       ]
     }
